@@ -111,12 +111,12 @@ def save_economic_data():
 
     print("All economic data saved successfully!")
 
-    # Commit and push the updated CSV file to GitHub
-    os.system("git config --local user.email 'github-actions@github.com'")
-    os.system("git config --local user.name 'GitHub Actions'")
-    os.system("git add data.csv")
-    os.system('git commit -m "Updated economic data: {}"'.format(today_date))
-    os.system("git push")
+    # # Commit and push the updated CSV file to GitHub
+    # os.system("git config --local user.email 'github-actions@github.com'")
+    # os.system("git config --local user.name 'GitHub Actions'")
+    # os.system("git add data.csv")
+    # os.system('git commit -m "Updated economic data: {}"'.format(today_date))
+    # os.system("git push")
 
 # Run the function
 save_economic_data()
