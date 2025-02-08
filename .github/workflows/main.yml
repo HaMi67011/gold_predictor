@@ -27,9 +27,13 @@ jobs:
         run: python scraper.py
 
       - name: Commit and Push Changes
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --local user.email "github-actions@github.com"
           git config --local user.name "GitHub Actions"
           git add data.csv
-          git commit -m "Updated CSV data"
-          git push
+          git commit -m "Updated CSV data" || echo "No changes to commit"
+          git pull --rebase  # Sync with main branch
+          git push https://HaMi67011:${GH_PAT}@github.com/HaMi67011/gold_predictor.git main
+
