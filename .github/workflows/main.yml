@@ -1,0 +1,35 @@
+name: Run Scraper and Save Data
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # Runs every day at 6 AM UTC (adjust for your timezone)
+
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest  # Runs on GitHub's cloud server
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Scraper Script
+        run: python scraper.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data.csv
+          git commit -m "Updated CSV data"
+          git push
