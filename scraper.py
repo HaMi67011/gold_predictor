@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+import csv
 
 # Function to get Gold Prices in Pakistan
 def get_pakistan_gold_prices():
