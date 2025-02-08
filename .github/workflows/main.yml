@@ -2,17 +2,18 @@ name: Run Scraper and Save Data
 
 on:
   schedule:
-    - cron: "0 6 * * *"  # Runs every day at 6 AM UTC (adjust for your timezone)
-
+    - cron: "0 6 * * *"  # Runs every day at 6 AM UTC
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
   scrape:
-    runs-on: ubuntu-latest  # Runs on GitHub's cloud server
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # Prevents using the default GITHUB_TOKEN
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -20,20 +21,18 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run Scraper Script
         run: python scraper.py
 
       - name: Commit and Push Changes
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GH_PAT }}  # Use stored PAT for authentication
         run: |
           git config --local user.email "github-actions@github.com"
           git config --local user.name "GitHub Actions"
           git add data.csv
           git commit -m "Updated CSV data" || echo "No changes to commit"
-          git pull --rebase  # Sync with main branch
+          git pull --rebase  # Sync latest changes before pushing
           git push https://HaMi67011:${GH_PAT}@github.com/HaMi67011/gold_predictor.git main
-
